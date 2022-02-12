@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from musicshop.api.cart.models import CartProduct, Customer, Cart, Order
-from musicshop.api.product.serializers import ProductDetailSerializer
+from .models import CartProduct, Customer, Cart, Order
+from product.serializers import ProductDetailSerializer
 
 
 class CartProductSerializer(serializers.ModelSerializer):

@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class MusicshopConfig(AppConfig):
+class ProductConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'musicshop'
+    name = 'product'

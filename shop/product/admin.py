@@ -131,7 +131,7 @@ class RatingAdmin(admin.ModelAdmin):
 
 
 @admin.register(ProductPhoto)
-class MovieShotsAdmin(admin.ModelAdmin):
+class ProductPhotoAdmin(admin.ModelAdmin):
     list_display = ("title", "product", "get_image")
     readonly_fields = ("get_image",)
     def get_image(self, obj):
@@ -141,11 +141,3 @@ class MovieShotsAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Ratingstar)
-admin.site.register(CartProduct)
-admin.site.register(Cart)
-admin.site.register(Order)
-admin.site.register(Customer)
-
-
-admin.site.site_title = "MusicShop"
-admin.site.site_header = "MusicShop"

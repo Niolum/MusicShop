@@ -1,8 +1,8 @@
 from django.db import models
 from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
-from musicshop.api.product.models import Category, Subcategory, Product
-from musicshop.api.product.serializers import (
+from .models import Category, Subcategory, Product
+from .serializers import (
     CreateRatingSerializer, 
     ProductListSerializer, 
     ProductDetailSerializer, 
@@ -12,7 +12,7 @@ from musicshop.api.product.serializers import (
     SubcategoryListSerializer,
     SubcategoryDetailSerializer,
 )
-from musicshop.api.product.service import get_client_ip, ProductFilter, PaginationProducts
+from .service import get_client_ip, ProductFilter, PaginationProducts
 
 
 

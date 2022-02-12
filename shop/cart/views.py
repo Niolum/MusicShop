@@ -3,8 +3,9 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from .models import Product, Cart, Customer, CartProduct
-from musicshop.api.cart.serializers import CartSerializer, OrderCreateSerializer
+from .models import Cart, Customer, CartProduct
+from product.models import Product
+from .serializers import CartSerializer, OrderCreateSerializer
 
 
 
@@ -18,6 +19,7 @@ class CartViewSet(ModelViewSet):
         if user.is_authenticated:
             return Cart.objects.filter(owner=user.customer, for_anonymous_user=False).first()
         return Cart.objects.filter(for_anonymous_user=True).first()
+
 
     @staticmethod
     def _get_or_create_cart_product(customer: Customer, cart: Cart, product: Product):
@@ -56,7 +58,7 @@ class CartViewSet(ModelViewSet):
 
     @action(methods=["put"], detail=False, url_path='current_customer_cart/remove_from_cart/(?P<cproduct_id>\d+)')
     def product_remove_from_cart(self, *args, **kwargs):
-        cart = self.get_cart(self.request.user)
+        cart = self.get_cart(user=self.request.user)
         cproduct = get_object_or_404(CartProduct, id=kwargs['cproduct_id'])
         cart.cart_products.remove(cproduct)
         cproduct.delete()
@@ -70,8 +72,6 @@ class OrderCreateViewSet(ModelViewSet):
 
     def post(self, request):
         serializer = OrderCreateSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(cart_id=self.request.user)
-            return Response(serializer.data, satus=status.HTTP_201_CREATED)
-        return Response(serializer.errors, satus=status.HTTP_400_BAD_REQUEST)
-        
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

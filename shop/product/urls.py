@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import SimpleRouter
 from rest_framework.urlpatterns import format_suffix_patterns
-from musicshop.api.product.views import ProductViewSet, CategorysViewSet, SubcategorysViewSet, AddStarRatingViewSet, ReviewCreateViewSet
+from .views import ProductViewSet, CategorysViewSet, SubcategorysViewSet, AddStarRatingViewSet, ReviewCreateViewSet
 
 
 
@@ -11,7 +11,7 @@ router_product.register('category', CategorysViewSet, basename='category')
 router_product.register('subcategory', SubcategorysViewSet, basename='subcategory')
 
 
-product_urlpatterns = format_suffix_patterns ([
+urlpatterns = format_suffix_patterns ([
     path('', include(router_product.urls)),
     path('review/', ReviewCreateViewSet.as_view({'post': 'create'})),
     path('rating/', AddStarRatingViewSet.as_view({'post': 'create'})),

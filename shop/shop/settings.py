@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cart',
+    'product',
+    'user',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
@@ -47,8 +50,7 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'ckeditor',
     'ckeditor_uploader',
-    'django_filters',
-    'musicshop',
+    'django_filters'   
 ]
 
 MIDDLEWARE = [

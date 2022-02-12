@@ -1,7 +1,7 @@
 from django_filters import rest_framework as filters
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from musicshop.api.product.models import Product
+from .models import Product
 
 
 class PaginationProducts(PageNumberPagination):

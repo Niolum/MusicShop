@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from musicshop.api.product.models import Category, Subcategory, Product, Rating, Review
+from .models import Category, Subcategory, Product, Rating, Review
 
 
 class FilterReviewListSerializer(serializers.ListSerializer):
