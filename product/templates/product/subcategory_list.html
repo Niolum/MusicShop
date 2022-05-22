@@ -1,0 +1,74 @@
+{% extends 'product/base.html' %}
+
+{% block title %}
+<title>{{title}}</title>
+{% endblock title %}
+{% block content %}
+<body>
+  <div class="container">
+    <h1 class="subcategory_header">{{title}}</h1>
+    <div class="left-ads-display col-lg-12">
+      <div class="row">
+        {% for subcategory in subcategory_list %}
+        <div class="col-lg-4 col-md-6 col-xs-6 category">
+          <div class="block-subcategory">
+            <div class="subcategory-image">
+              <a href="{{ subcategory.get_absolute_url }}" class="editContent">
+                <img src="{{ subcategory.image.url }}" class="img-fluid" alt="{{ subcategory.title }}">
+              </a>
+            </div>
+            <div class="subcategory-title">
+              <a href="{{ subcategory.get_absolute_url }}" class="editContent">
+                {{ subcategory.title }}
+              </a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <h1 class="brand_header">Популярные бренды</h1>
+    <div class="top-brand col-lg-12">
+      <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="row">
+              {% for brand in brands|slice:":8" %}
+              <div class="col-lg-3 col-md-4 col-xs-6 brand">
+                <div class="brand-image">
+                  <a href="#" class="editContent">
+                    <img src="{{ brand.image.url }}" class="img-fluid d-block" alt="{{ brand.title }}">
+                  </a>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="row">
+              {% for brand in brands|slice:"8:" %}
+              <div class="col-lg-3 col-md-4 col-xs-6 brand">
+                <div class="brand-image">
+                  <a href="#" class="editContent">
+                    <img src="{{ brand.image.url }}" class="img-fluid" alt="{{ brand.title }}">
+                  </a>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

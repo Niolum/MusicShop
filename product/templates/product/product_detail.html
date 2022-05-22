@@ -1,0 +1,111 @@
+{% extends 'product/base.html' %}
+
+{% block title %}
+<title>{{title}}</title>
+{% endblock title %}
+{% block content %}
+<div class="product-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="product-title">
+          <h1 class="product-title-header">{{ product.title}}</h1>
+          <div class="addrating">
+            <form action="{% url 'add_rating' %}" method="post" name="rating">
+              <b>Рейтинг:</b>
+              {% csrf_token %}
+              <input type="hidden" value="{{ product.id }}" name="product">
+              <span class="rating">
+                {% for k, v in star_form.fields.star.choices %}
+                {{v}} {{k}}
+                {% if user.is_authenticated and userrating %}
+                <input id="rating{{ v }}" type="radio" name="star" value="{{ k }}" checked>
+                <label for="rating{{ v }}">{{ k }}</label>
+                {% endif %}
+                {% endfor %}
+                  
+              </span>
+              <span class="editContent">4.0</span>
+            </form>
+          </div>
+        </div>
+        <div class="row product-page-info">
+          <div class="col-lg-8 product-gallery">
+            <div class="product-brand">
+              <img src="{{ product.brand.image.url }}" class="img-fluid photo-brand" alt="{{ product.brand.title }}">
+            </div>
+
+            <div id="myCarousel2" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-indicators">
+                {% for photo in product.productphoto_set.all %}
+                {% with forloop.counter0 as i %}
+                {% with forloop.counter as n %}
+                <button type="button" data-bs-target="#myCarousel2" data-bs-slide-to="{{i}}" {% if i is 0 %}class="active" aria-current="true" {% endif %} aria-label="Slide {{n}}"></button>
+                {% endwith %}
+                {% endwith %}
+                {% endfor %}
+              </div>
+              <div class="carousel-inner">
+                {% for photo in product.productphoto_set.all %}
+                {% with forloop.counter0 as i %}
+                <div class="carousel-item {% if i is 0 %}active{% endif %}">
+                  <figure class="item-productphoto">
+                    <img src="{{photo.image.url}}" class="img-fluid d-block productphoto" alt="{{photo.title}}">
+                  </figure>
+                </div>
+                {% endwith %}
+                {% endfor %}
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel2" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#myCarousel2" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+          <div class="col-lg-4 product-buy">
+            <div class="product-info-avialable">
+              <div class="product-info-guaranty">
+                Гарантия: 1 год
+              </div>
+              <div class="prouct-info-avialable-stock">
+                {% if product.stock %}
+                В наличии {{ product.stock }} шт.
+                {% else %}
+                Нет в наличии
+                {% endif %}
+              </div>
+              <div class="product-info-avialable-list">
+                на складе Интернет-магазина
+              </div>
+            </div>
+            <h1 class="product-price">{{ product.price }} Р.</h1>
+            <a href="#" class="btn btn-primary">Добавить в корзину</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-description">{{ product.description|safe }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <h1 class="review-header">Оставить отзыв</h1>
+      <form action="{% url 'add_review' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-error">{{ form.non_fields_errors }}</div>
+        {% for f in form %}
+        <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+        <div class="form-error">{{ f.errors }}</div>
+        {% endfor %}
+        <button type="submit">Добавить</button>
+      </form>
+    </div>
+    
+  </div>
+</div>
+
+{% endblock content %}
