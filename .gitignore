@@ -3,8 +3,7 @@
 *.pot
 *.pyc
 __pycache__
-db.sqlite3
-media
+*sqlite3
 settings_local.py
 
 # Environments 
@@ -24,6 +23,5 @@ venv.bak/
 !.vscode/extensions.json 
 .history
 
-**/migrations/*
-**/static/*
+
 **/local.py

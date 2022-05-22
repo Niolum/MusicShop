@@ -1,0 +1,7 @@
+{% extends "product/base.html" %}
+
+{% block content %}
+<p class="logout">Выполнен выход!</p>
+
+<a class="logout" href="{% url 'login'%}">Нажмите сюда, чтобы снова войти.</a>
+{% endblock %}
