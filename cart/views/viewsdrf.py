@@ -1,50 +1,11 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from rest_framework import status
-from .models import Cart, Customer, CartProduct
+from ..models import Cart, Customer, CartProduct
 from product.models import Product
-from .serializers import CartSerializer, OrderCreateSerializer
-from django.views.generic import ListView, DetailView
-from django.views.decorators.http import require_POST
-
-
-# class CartDetailView(DetailView):
-#     model = Cart
-
-#     @staticmethod
-#     def get_or_create_cart(user):
-#         if user.is_authenticated:
-#             return Cart.objects.get_or_create(owner=user.customer, for_anonmous_user=False).first()
-#         return Cart.objects.filter(for_anonymous_user=True).first()
-
-#     @staticmethod
-#     def _get_or_create_cart_product(customer: Customer, cart: Cart, product: Product):
-#         cart_product, created = CartProduct.objects.get_or_create(
-#             user=customer,
-#             product=product,
-#             cart=cart
-#         )
-#         return cart_product, created
-
-#     @require_POST
-#     def add_to_cart(request, product_id):
-#         cart = Cart(request)
-#         product = self._get_or_create_cart_product()
-def add_to_cart(request, user, *args, **kwargs):
-    if user.is_authenticated:
-        user_cart = Cart.objects.get_or_create(owner=user.customer, for_anonymous_user=False)
-    else:
-        user_cart = Cart.objects.get_or_create(for_anonymous_user=True)
-    product = get_object_or_404(Product, id=kwargs['product_id'])
-    cart_product, created = CartProduct.objects.get_or_create(user=user.customer, product=product, cart=user_cart)
-    if created:
-        user_cart.cart_products.add(cart_product)
-        user_cart.save()
-    return render(request, 'addcart.html', {'user_cart': user_cart, 'cart_product': cart_product})
-    
-        
+from ..serializers import CartSerializer, OrderCreateSerializer
 
 
 

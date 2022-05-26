@@ -1,6 +1,4 @@
 from django.urls import path, include
-from rest_framework.routers import SimpleRouter
-from rest_framework.urlpatterns import format_suffix_patterns
 from product.views.views import (
     CategoryListView,
     SubcategoryCategoryListView,

@@ -11,7 +11,7 @@ class CartProduct(models.Model):
     cart = models.ForeignKey('Cart', verbose_name='Корзина', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, verbose_name='Продукт', on_delete=models.CASCADE)
     qty = models.PositiveIntegerField(default=1)
-    final_price = models.DecimalField(max_digits=19, decimal_places=2, verbose_name='Общая цена')
+    final_price = models.DecimalField(max_digits=19, decimal_places=0, verbose_name='Общая цена')
 
 
     def __str__(self):
@@ -33,7 +33,7 @@ class Cart(models.Model):
         CartProduct, blank=True, related_name='related_cart', verbose_name='Продукты для корзины'
     )
     total_products = models.IntegerField(default=0, verbose_name='Общее кол-во товара')
-    final_price = models.DecimalField(max_digits=19, decimal_places=2, default=0, verbose_name='Общая цена')
+    final_price = models.DecimalField(max_digits=19, decimal_places=0, default=0, verbose_name='Общая цена')
     in_order = models.BooleanField(default=False)
     for_anonymous_user = models.BooleanField(default=False)
 
@@ -82,7 +82,7 @@ class Order(models.Model):
     first_name = models.CharField(max_length=255, verbose_name='Имя')
     last_name = models.CharField(max_length=255, verbose_name='Фамилия')
     phone = models.CharField(max_length=20, verbose_name='Телефон')
-    cart = models.ForeignKey(Cart, verbose_name='Корзина', on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, verbose_name='Корзина', on_delete=models.CASCADE, null=True, blank=True)
     address = models.CharField(max_length=1024, verbose_name='Адрес', null=True, blank=True)
     status = models.CharField(
         max_length=100, verbose_name='Статус заказа', choices=STATUS_CHOISES, default=STATUS_NEW
