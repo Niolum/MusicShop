@@ -21,9 +21,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('api/v1/', include('cart.urls')),
     path('api/v1/products/', include('product.urls.urlsdrf')),
     path('products/', include('product.urls.urls')),
+    path('api/v1/cart/', include('cart.urls.urlsdrf')),
+    path('carts/', include('cart.urls.urls')),
     path('api/v1/users/', include('user.urls.urlsdrf')),
     path('users/', include('user.urls.urls')),
 ]
