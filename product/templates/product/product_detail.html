@@ -10,7 +10,21 @@
       <div class="col-lg-12">
         <div class="product-title">
           <h1 class="product-title-header">{{ product.title}}</h1>
-          
+
+          <form action="{% url 'add_rating' %}" method="post" name="rating">
+            <b>Рейтинг:</b>
+            {% csrf_token %}
+            <input type="hidden" value="{{ product.id }}" name="product">
+            <span class="rating">
+                {% for k, v in star_form.fields.star.choices %}
+                    <input id="rating{{ v }}" type="radio" name="star"
+                           value="{{ k }}">
+                    <label for="rating{{ v }}">{{ k }}</label>
+                {% endfor %}
+            </span>
+            <span class="editContent">4.0</span>
+        </form>
+
         </div>
         <div class="row product-page-info">
           <div class="col-lg-8 product-gallery">
@@ -77,18 +91,48 @@
 
     <div class="row">
       <h1 class="review-header">Оставить отзыв</h1>
-      <form action="{% url 'add_review' %}" method="post" enctype="multipart/form-data">
+      <form action="{% url 'add_review' product.url %}" method="post" id="formReview" enctype="multipart/form-data">
         {% csrf_token %}
+        <input type="hidden" name="parent" id="contactparent" value="">
         <div class="form-error">{{ form.non_fields_errors }}</div>
         {% for f in form %}
         <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
         <div class="form-error">{{ f.errors }}</div>
         {% endfor %}
-        <button type="submit">Добавить</button>
+        <button type="submit" class="btn btn-primary add-review">Добавить</button>
       </form>
     </div>
-    
+    <div class="row">
+      <div class="comments mt-5">
+      {% for review in product.get_review %}
+        <div class="parent-comment mt-2">
+          <h5 class="mt-0 editContent">
+              {{ review.user }}
+          </h5>
+          <p class="mt-2 editContent">
+              {{ review.text }}
+          </p>
+          <a href="#formReview"  onclick="addReview('{{ review.user }}', '{{ review.id}}')">Ответить</a>
+          {% for rev in review.children.all %}
+          <div class="children-comment mt-4">
+            <h5 class="mt-0 editContent">
+              {{ rev.user }}
+            </h5>
+            <p class="mt-2 mb-2 editContent">
+              {{ rev.text }}
+            </p>
+          </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+      </div>
+    </div>
   </div>
 </div>
-
+<script>
+  function addReview(user, id) {
+      document.getElementById("contactparent").value = id;
+      document.getElementById("id_text").innerText = `${user}, `
+  }
+</script>
 {% endblock content %}

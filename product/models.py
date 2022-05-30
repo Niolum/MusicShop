@@ -74,7 +74,10 @@ class Product(models.Model):
         return f"{self.id}-{self.brand.title}-{self.title}"
 
     def get_absolute_url(self):
-        return reverse('products', kwargs={"slug":self.url}) 
+        return reverse('products', kwargs={"slug":self.url})
+
+    def get_review(self):
+        return self.reviews.filter(parent__isnull=True) 
 
     class Meta:
         verbose_name = 'Товар'
@@ -135,7 +138,7 @@ class Review(models.Model):
 
 
     def __str__(self):
-        return f"{self.user}-{self.product}"
+        return f"{self.user}-{self.text}"
 
     class Meta:
         verbose_name = 'Отзыв'

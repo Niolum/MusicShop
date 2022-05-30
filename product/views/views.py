@@ -60,40 +60,39 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
         context['title'] = context['product'].title
-        product_id = context['product'].id
+        # product_id = context['product'].id
         # context['userrating'] = Rating.objects.filter(ip=get_client_ip(self.request), product_id=product_id)
         context["star_form"] = RatingForm()
         context["form"] = ReviewForm()
         return context
 
 
-# class AddStarRating(View):
+class AddStarRating(View):
 
-#     def post(self, request):
-#         form = RatingForm(request.POST)
-#         if form.is_valid():
-#             Rating.objects.update_or_create(
-#                 ip=get_client_ip(self.request),
-#                 product_id=int(request.POST.get("product")),
-#                 defaults={'star_id': int(request.POST.get("star"))}
-#             )
-#             return HttpResponse(status=201)
-#         else:
-#             return HttpResponse(status=400)
+    def post(self, request):
+        form = RatingForm(request.POST)
+        if form.is_valid():
+            Rating.objects.update_or_create(
+                users=request.user,
+                product_id=int(request.POST.get("product")),
+                # star_id=form.cleaned_data.get("star")
+                defaults={'star_id': int(request.POST.get("star"))}
+            )
+            return HttpResponse(status=201)
+        else:
+            return HttpResponse(status=400)
 
 
 class AddReview(View):
 
     def post(self, request, *args, **kwargs):
         form = ReviewForm(request.POST)
-        product = get_object_or_404(Product, id=self.kwargs['product_id'])
+        product = get_object_or_404(Product, url=self.kwargs['slug'])
         if form.is_valid():
             form = form.save(commit=False)
             if request.POST.get("parent", None):
                 form.parent_id = int(request.POST.get("parent"))
             form.product = product
+            form.user = request.user
             form.save()
-        return redirect(product.get_absolute_url())
-
-
-
+            return redirect(product.get_absolute_url())
