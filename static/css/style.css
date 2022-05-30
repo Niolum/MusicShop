@@ -311,6 +311,44 @@ figure {
     font-size: 20px;
 }
 
+.add-review {
+    width: auto;
+    margin: auto;
+    display: block;
+    width: 25%;
+}
+
+.comments {
+    border:#000;
+    border-width: 5px;
+    border-style: double;
+    border-radius: 20px;
+    padding: 15px;
+}
+
+.comments h5{
+    font-size: 25px;
+}
+
+.comments p {
+    font-size: 19px;
+}
+
+.parent-comment {
+    border-bottom: 3px solid #000;
+    padding: 15px 0px;
+}
+
+.parent-comment a{
+    text-decoration: none;
+    color:rgb(90, 32, 226);
+    font-size: 15px;
+}
+
+.children-comment {
+    margin-left: 20px;
+}
+
 .login {
     margin:auto;
     padding: auto;
