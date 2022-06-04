@@ -1,0 +1,27 @@
+{% extends "product/base.html" %}
+
+{% block content %}
+<div class="editprofile">
+    <h1>Редактировать свой аккаунт</h1>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message|safe }}
+                <a href="#" class="close">✖</a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <p><b>Вы можете редактировать свою учетную запись, используя следующую форму:</b></p>
+    <div class="form-profile">
+        <form action="." method="post" enctype="multipart/form-data">
+            {{ user_form.as_p }}
+            {{ profile_form.as_p }}
+            {% csrf_token %}
+            <p><input type="submit" value="Сохранить изменения" class="btn btn-primary editprofile-button"></p>
+        </form>
+    </div>
+</div>
+{% endblock %}

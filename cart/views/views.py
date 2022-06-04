@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from cart.forms import OrderForm
 from ..models import Cart, CartProduct, Customer
 from product.models import Product
@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.db import transaction
+from django.views.generic import DetailView, ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
@@ -101,3 +103,35 @@ class MakeOrderView(CartMixin, View):
             customer.customer_orders.add(new_order)
             messages.add_message(request, messages.INFO, 'Спасибо за заказ! Менеджер с Вами свяжется')
         return HttpResponseRedirect(reverse('cart'))
+
+
+class AddWishlist(LoginRequiredMixin, View):
+    login_url = 'login'
+    
+    def get(self, request, *args, **kwargs):
+        product = get_object_or_404(Product, url=self.kwargs['slug'])
+        customer = Customer.objects.get(user=request.user)
+        customer.wishlist.add(product)
+        return redirect(product.get_absolute_url())
+
+
+class DeleteFromWishlist(View):
+    def get(self, request, *args, **kwargs):
+        product = get_object_or_404(Product, url=self.kwargs['slug'])
+        customer = Customer.objects.get(user=request.user)
+        customer.wishlist.remove(product)
+        return HttpResponseRedirect(reverse('wishlist'))
+
+
+class WishlistView(LoginRequiredMixin, ListView):
+    model = Customer
+    template_name = 'cart/wishlist.html'
+    login_url = 'login'
+
+    def get_queryset(self):
+        return Customer.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super(WishlistView, self).get_context_data(**kwargs)
+        context['wishlist'] = context['customer_list'][0].wishlist
+        return context

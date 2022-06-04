@@ -43,6 +43,7 @@ class ProductSubcategoryListView(ListView):
     model = Product
     slug_field = "url" 
     allow_empty = False
+    paginate_by = 3
 
     def get_queryset(self):
         return Product.objects.filter(subcategory__url=self.kwargs['slug'])
@@ -73,10 +74,9 @@ class AddStarRating(View):
         form = RatingForm(request.POST)
         if form.is_valid():
             Rating.objects.update_or_create(
-                users=request.user,
+                user=request.user,
                 product_id=int(request.POST.get("product")),
-                # star_id=form.cleaned_data.get("star")
-                defaults={'star_id': int(request.POST.get("star"))}
+                # defaults={'star_id': int(request.POST.get("star"))}
             )
             return HttpResponse(status=201)
         else:

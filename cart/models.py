@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from product.models import Product
+from django.urls import reverse
 
 
 
@@ -119,3 +120,6 @@ class Customer(models.Model):
     class Meta:
         verbose_name = 'Покупатель'
         verbose_name_plural = 'Покупатели'
+
+    def get_absolute_url(self):
+        return reverse('customers', kwargs={'pk': self.pk})

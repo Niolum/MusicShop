@@ -1,0 +1,39 @@
+{% extends "product/base.html" %}
+
+{% block title %}
+<title>Список желаемого</title>
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="left-ads-display col-lg-12">
+        <div class="row">
+                {% if wishlist %}
+                <h1 class="your-wishlist">Ваш список желаемого</h1>
+                    {% for prod in wishlist.all %}
+                    <div class="col-lg-4 col-md-6 col-xs-6 product">
+                        <div class="card" style="width: 18rem;">
+                            <a href="{{ prod.get_absolute_url }}" class="editContent">
+                                <img src="{{ prod.image.url }}" class="card-img-top" alt="{{ prod.title }}">
+                            </a>
+                            <div class="card-body">
+                                <p class="product-subcategory">{{ prod.subcategory }}</p>
+                                <div class="product-header">
+                                    <a href="{{ prod.get_absolute_url }}" class="editContent">
+                                        <h5 class="card-title">{{ prod.title }}</h5>
+                                    </a>
+                                </div>
+                                <p class="card-text">{{ prod.price }} Р.</p>
+                                <a href="{% url 'add_to_cart' url=prod.url %}" class="btn btn-primary">Добавить в корзину</a>
+                                <a href="{% url 'delete_from_wishlist' prod.url %}" class="btn btn-danger wishlist-button">Убрать из желаемого</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <h1 class="empty-wishlist">Список желаемого пуст</h1>
+                {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

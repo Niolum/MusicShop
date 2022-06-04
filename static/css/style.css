@@ -33,6 +33,7 @@ body {
     grid-template-rows: auto 1fr auto;
 }
 
+/* navbar */
 .navbar {
     font-weight: 800;
 }
@@ -61,6 +62,7 @@ body {
     margin:auto;
 }
 
+/* category-list and subcategory-list */
 h1 {
     font-weight: 700;
     font-size: 36px;
@@ -173,6 +175,7 @@ h1 {
     transform: scale(1.1);
 }
 
+/* footer */
 footer {
     color:#fff;
     width: 100%;
@@ -205,10 +208,7 @@ footer .link-secondary:hover {
     width: 5%;
 }
 
-/* .card {
-    height: 430px;
-    width: 200px; 
-} */
+/* product-list */
 
 .card img{
     height: 165px;
@@ -234,35 +234,15 @@ footer .link-secondary:hover {
 
 .btn-primary{
     background-color: rgb(90, 32, 226);
-    width: 100%;;
+    width: 100%;
 }
+
+/* product-detail */
 
 .product-title-header {
     margin-left: 10px;
     text-align: left;
 }
-
-/* Rating star
-.rating-result {
-	width: 265px;
-	margin-left: 10px;
-    margin-bottom: 20px;
-}
-.rating-result span {
-	padding: 0;
-	font-size: 32px;
-	margin: 0 3px;
-	line-height: 1;
-	color: lightgrey;
-	text-shadow: 1px 1px #bbb;
-}
-.rating-result > span:before {
-	content: '★';
-}
-.rating-result > span.active {
-	color: gold;
-	text-shadow: 1px 1px #c60;
-} */
 
 .product-page-info {
     display: flex;
@@ -311,6 +291,11 @@ figure {
     font-size: 20px;
 }
 
+.product-detail-button {
+    margin-top: 20px;
+    width: 100%;
+}
+
 .add-review {
     width: auto;
     margin: auto;
@@ -349,34 +334,122 @@ figure {
     margin-left: 20px;
 }
 
+/* login */
 .login {
     margin:auto;
     padding: auto;
 }
 
+input[type=password] {
+    border:0;
+    border-radius:10px;
+    box-shadow:0 0 15px 4px rgba(70, 8, 214, 0.74);
+}
+
+.login label {
+    margin: 10px 15px 10px 0;
+}
+
+.login-button {
+    margin: 10px 0;
+}
+
+/* logged_out */
 .logout {
     margin:auto;
     padding: auto;
 }
 
+.logout-button {
+    display: block;
+    margin: auto;
+    padding: auto;
+    text-decoration: none;
+    color:rgb(90, 32, 226);
+}
+
+/* reset-form */
 .reset-form {
     margin:auto;
     padding: auto;
 }
 
+/* reset-done */
 .reset-done {
     margin:auto;
     padding: auto;
 }
 
+/* reset-confirm */
 .reset-confirm {
     margin:auto;
     padding: auto;
 }
 
+/* reset-complete */
 .reset-complete {
     margin:auto;
     padding: auto;
+}
+
+/* register */
+.register-form {
+    margin: auto;
+    padding: auto;
+}
+
+.register-button {
+    width: 20%;
+}
+
+/* register-done */
+.register-done {
+    margin: auto;
+    padding: auto;
+} 
+
+.register-done-button {
+    text-decoration: none;
+    color:rgb(90, 32, 226);
+} 
+
+/* editprofile */
+.editprofile {
+    margin: auto;
+    padding: auto;
+}
+
+.editprofile label {
+    display: block;
+    margin: 10px 0;
+}
+
+.editprofile input{
+    display: block;
+    margin: 10px 0;
+}
+
+input[type=text] {
+    border:0;
+    border-radius:10px;
+    box-shadow:0 0 15px 4px rgba(70, 8, 214, 0.74);
+}
+
+input[type=email] {
+    border:0;
+    border-radius:10px;
+    box-shadow:0 0 15px 4px rgba(70, 8, 214, 0.74);
+}
+
+textarea {
+    border:0;
+    border-radius:10px;
+    box-shadow:0 0 15px 4px rgba(70, 8, 214, 0.74);
+    height:150px;
+}
+
+.editprofile-button {
+    width: 30%;
 }
 
 /* Checkbox stars */
@@ -419,4 +492,70 @@ figure {
 
 .rating > label:hover:before, .rating > label:hover ~ label:before, .rating:not(:hover) > :checked ~ label:before {
     opacity: 1;
+}
+
+/* Wishlist */
+.wishlist-button {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.add-wishlist-button {
+    margin-top: 20px;
+}
+
+/* Ordercheck */
+.order {
+    margin: 20px;
+    padding: 20px;
+}
+
+.order-form label {
+    display: block;
+
+}
+
+select {
+    width: 180px;
+    border:0;
+    border-radius:10px;
+    box-shadow:0 0 15px 4px rgba(70, 8, 214, 0.74);
+}
+
+input[type=date] {
+    border:0;
+    border-radius:10px;
+    box-shadow:0 0 15px 4px rgba(70, 8, 214, 0.74);
+}
+
+.order-button {
+    width: 20%;
+    margin: 20px 0;
+}
+
+
+/* pagination */
+.pagination {
+    padding: 20px 0;
+    margin: auto;
+    justify-content: center;
+    /* text-align:justify */
+}
+
+.pagination .next {
+    display: block;
+    justify-content: center;
+    text-align:justify
+}
+
+.pagination .current {
+    display: block;
+    justify-content: center;
+    text-align:center;
+}
+
+.pagination .previous {
+    display: block;
+    justify-content: center;
+    text-align:justify
 }
