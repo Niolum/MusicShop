@@ -32,12 +32,14 @@
 </table>
 <hr>
 <h3 class="text-center mt-5 mb-5">Форма заказа</h3>
-<form action="{% url 'makeorder' %}" method="POST">
-  {% csrf_token %}
-  {% for f in form %}
-        <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
-        <div class="form-error">{{ f.errors }}</div>
-  {% endfor %}
-  <input type="submit" class="btn btn-success btn-block mb-3" values="Оформить заказ">
-</form>
+<div class="order">
+  <form class="order-form" action="{% url 'makeorder' %}" method="POST">
+    {% csrf_token %}
+    {% for f in form %}
+          <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+          <div class="form-error">{{ f.errors }}</div>
+    {% endfor %}
+    <input type="submit" class="btn btn-primary order-button" values="Оформить заказ">
+  </form>
+</div>
 {% endblock %}

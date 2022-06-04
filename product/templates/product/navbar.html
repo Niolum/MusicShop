@@ -16,6 +16,9 @@
                 <a class="nav-link active" href="#">Каталог</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link active" href="{% url 'wishlist' %}">Список желаемого</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link active carticon" href="{% url 'cart' %}">
                     <img src="{% static 'image/cart.jpg' %}" class="logo">
                 </a>
@@ -23,9 +26,13 @@
             {% if not user.is_authenticated %}
             <li class="nav-item">
                 <a class="nav-link active" href="{% url 'login' %}?next={{request.path}}">Войти</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'register' %}?next={{request.path}}">Регистрация</a>
+            </li>
                 {% else %}
             <li class="nav-item">
-                <a class="nav-link active carticon" href="#">
+                <a class="nav-link active carticon" href="{% url 'editprofile' %}">
                     <img src="{% static 'image/user.png' %}" class="logo">
                 </a>
             </li>    

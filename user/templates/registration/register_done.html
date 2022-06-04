@@ -1,0 +1,8 @@
+{% extends "product/base.html" %}
+
+{% block content %}
+<div class="register-done">
+    <h1>Добро пожаловать {{ new_user.username }}!</h1>
+    <p>Ваша учетная запись успешно создана. Теперь вы можете <a href="{% url 'login' %}" class="register-done-button">Войти</a></p>
+</div>
+{% endblock %}
