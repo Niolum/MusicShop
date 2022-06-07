@@ -65,13 +65,13 @@ class ShopTests(APITestCase):
             draft=True
         )
 
-        self.review = Review.objects.create(
-            email = 'Mark@mail.ru',
-            name = 'Mark',
-            text = 'good guitar',
-            parent = None,
-            product = Product.objects.get(id=1)
-        )
+        # self.review = Review.objects.create(
+        #     email = 'Mark@mail.ru',
+        #     name = 'Mark',
+        #     text = 'good guitar',
+        #     parent = None,
+        #     product = Product.objects.get(id=1)
+        # )
 
     def test_product_list(self):
         # Проверка списка продуктов
