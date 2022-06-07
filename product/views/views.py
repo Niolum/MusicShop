@@ -12,7 +12,7 @@ from django.http import HttpResponse
 class CategoryListView(ListView):
     model = Category
     queryset = Category.objects.all()
-    allow_empty = False
+    # allow_empty = False
 
     def get_context_data(self, **kwargs):
         context = super(CategoryListView, self).get_context_data(**kwargs)
@@ -27,7 +27,7 @@ class CategoryListView(ListView):
 class SubcategoryCategoryListView(ListView):
     model = Subcategory
     slug_field = "url"
-    allow_empty = False
+    # allow_empty = False
 
     def get_queryset(self):
         return Subcategory.objects.filter(category__url=self.kwargs['slug'])
@@ -42,7 +42,7 @@ class SubcategoryCategoryListView(ListView):
 class ProductSubcategoryListView(ListView):
     model = Product
     slug_field = "url" 
-    allow_empty = False
+    # allow_empty = False
     paginate_by = 3
 
     def get_queryset(self):
