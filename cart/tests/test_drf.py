@@ -1,4 +1,5 @@
-from .models import Cart, CartProduct, Customer, Order
+from django.test import TestCase
+from ..models import Cart, CartProduct, Customer, Order
 from product.models import Category, Subcategory, Product, Brand
 from django.contrib.auth.models import User
 from rest_framework.test import APITestCase
@@ -6,7 +7,7 @@ from rest_framework import status
 from django.urls import reverse
 from django.contrib import auth
 
-# Create your tests here.
+
 class CartTests(APITestCase):
 
     def setUp(self):

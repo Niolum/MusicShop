@@ -80,6 +80,7 @@ class Product(models.Model):
         return self.reviews.filter(parent__isnull=True) 
 
     class Meta:
+        ordering = ['id']
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
 

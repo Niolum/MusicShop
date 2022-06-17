@@ -1,16 +1,32 @@
-from .models import Category, Subcategory, Product, Brand, Review
+from django.test import TestCase
+from ..models import Category, Subcategory, Product, Brand, Review
 from django.contrib.auth.models import User
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.urls import reverse
-from django.contrib import auth
 
-# Create your tests here.
+
 class ShopTests(APITestCase):
 
     def setUp(self):
         self.one_category = Category.objects.create(title='Guitars', image='guitar.jpg', description='All guitars', url='guitars')
         self.two_category = Category.objects.create(title='Drums', image='drum.jpg', description='All drums', url='drums')
+
+        new_user1_data = {
+            "username": "dummy",
+            "first_name": "a",
+            "last_name": "dummy",
+            "password": "randompassword",
+            "email": "test@test.com",
+        }
+
+        self.new_user1 = User.objects.create_user(
+            username=new_user1_data["username"],
+            first_name=new_user1_data["first_name"],
+            last_name=new_user1_data["last_name"],
+            email=new_user1_data["email"],
+            password=new_user1_data["password"]
+        )
 
         self.one_subcategory = Subcategory.objects.create(
             title='Electric Guitars', 
@@ -65,13 +81,12 @@ class ShopTests(APITestCase):
             draft=True
         )
 
-        # self.review = Review.objects.create(
-        #     email = 'Mark@mail.ru',
-        #     name = 'Mark',
-        #     text = 'good guitar',
-        #     parent = None,
-        #     product = Product.objects.get(id=1)
-        # )
+        self.review = Review.objects.create(
+            user = User.objects.get(id=1),
+            text = 'good guitar',
+            parent = None,
+            product = Product.objects.get(id=1)
+        )
 
     def test_product_list(self):
         # Проверка списка продуктов
