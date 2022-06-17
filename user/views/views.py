@@ -40,7 +40,7 @@ def register(request):
     return render(request, 'registration/register.html', {'user_form': user_form})
 
 
-@login_required
+@login_required(login_url='/users/accounts/login/')
 def editprofile(request):
     if request.method == 'POST':
         user_form = UserEditForm(instance=request.user, data=request.POST)

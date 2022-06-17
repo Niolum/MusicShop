@@ -4,7 +4,7 @@ from rest_framework import status
 from django.urls import reverse
 from django.contrib import auth
 
-# Create your tests here.
+
 class UserTests(APITestCase):
 
     def setUp(self):
