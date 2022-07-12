@@ -45,23 +45,15 @@ class SubcategoryDetailSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'category', 'image', 'description', 'url']
 
 
-# class ProductListSerializer(serializers.ModelSerializer):
-#     """Список товаров"""
-#     rating_user = serializers.BooleanField()
-#     middle_star = serializers.IntegerField()
-
-#     class Meta:
-#         model = Product
-#         fields = ['id', 'title', 'brand', 'price', 'subcategory', 'rating_user', 'middle_star']
-
 class ProductListSerializer(serializers.ModelSerializer):
     """Список товаров"""
-    # rating_user = serializers.BooleanField()
-    # middle_star = serializers.IntegerField()
+    rating_user = serializers.BooleanField()
+    middle_star = serializers.FloatField()
 
     class Meta:
         model = Product
-        fields = ['id', 'title', 'brand', 'price', 'subcategory']
+        fields = ['id', 'title', 'brand', 'price', 'subcategory', 'rating_user', 'middle_star']
+
 
 
 class ReviewCreateSerializer(serializers.ModelSerializer):
@@ -87,6 +79,8 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     subcategory = SubcategoryListSerializer(read_only=True)
     brand = serializers.SlugRelatedField(slug_field="title", read_only=True)
     reviews = ReviewSerializer(read_only=True, many=True)
+    rating_user = serializers.BooleanField()
+    middle_star = serializers.FloatField()
 
     class Meta:
         model = Product
@@ -100,10 +94,10 @@ class CreateRatingSerializer(serializers.ModelSerializer):
         model = Rating
         fields = ['value', 'product']
 
-    # def create(self, validated_data):
-    #     rating, _ = Rating.objects.update_or_create(
-    #         ip=validated_data.get('ip', None),
-    #         product=validated_data.get('product', None),
-    #         defaults={'star': validated_data.get("star")}
-    #     )
-    #     return rating
+    def create(self, validated_data):
+        rating, _ = Rating.objects.update_or_create(
+            user=validated_data.get('user', None),
+            product=validated_data.get('product', None),
+            defaults={'value': validated_data.get("value")}
+        )
+        return rating

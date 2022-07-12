@@ -1,3 +1,4 @@
+from django.db import models
 from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 from ..models import Category, Subcategory, Product, Brand, Rating
@@ -23,13 +24,13 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = PaginationProducts
     queryset = Product.objects.all()
 
-    # def get_queryset(self):
-    #     products = Product.objects.filter(draft=False).annotate(
-    #         rating_user=models.Count("ratings", filter=models.Q(ratings__ip=get_client_ip(self.request)))
-    #     ).annotate(
-    #         middle_star=models.Sum(models.F('ratings__star')) / models.Count(models.F('ratings'))
-    #     )
-    #     return products
+    def get_queryset(self):
+        products = Product.objects.filter(draft=False).annotate(
+            rating_user=models.Count("ratings", filter=models.Q(ratings__user=self.request.user))
+        ).annotate(
+            middle_star=models.Sum(models.F('ratings__value')) / models.Count(models.F('ratings'))
+        )
+        return products
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -47,8 +48,8 @@ class AddStarRatingViewSet(viewsets.ModelViewSet):
     """Добавление рейтинга к товару"""
     serializer_class = CreateRatingSerializer
 
-    # def perform_create(self, serializer):
-    #     serializer.save(ip=get_client_ip(self.request))
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class CategorysViewSet(viewsets.ReadOnlyModelViewSet):
