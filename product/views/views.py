@@ -1,3 +1,4 @@
+from django.db import models
 from django.shortcuts import get_object_or_404, render, redirect
 from ..models import Category, Subcategory, Product, Brand, Rating
 from ..service import ProductFilter, PaginationProducts
@@ -58,13 +59,20 @@ class ProductDetailView(DetailView):
     model = Product
     slug_field = "url"
 
+    def get_queryset(self):
+        products = Product.objects.filter(draft=False).annotate(
+            middle_star=models.Sum(models.F('ratings__value')) / models.Count(models.F('ratings'))
+        )
+        return products
+
     def get_context_data(self, **kwargs):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
         context['title'] = context['product'].title
         # product_id = context['product'].id
-        # context['userrating'] = Rating.objects.filter(ip=get_client_ip(self.request), product_id=product_id)
+        # context['userrating'] = Rating.objects.filter(user=self.request.user, product_id=product_id)
         context["star_form"] = RatingForm()
         context["form"] = ReviewForm()
+        context["middle_star"] = context['product'].middle_star
         return context
 
 
@@ -76,7 +84,7 @@ class AddStarRating(View):
             Rating.objects.update_or_create(
                 user=request.user,
                 product_id=int(request.POST.get("product")),
-                defaults={'value': int(request.POST.get("value"))}
+                defaults={'value': float(request.POST.get("value"))}
             )
             return HttpResponse(status=201)
         else:

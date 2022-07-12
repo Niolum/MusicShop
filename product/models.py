@@ -105,7 +105,7 @@ class ProductPhoto(models.Model):
 class Rating(models.Model):
     """ Рейтинг """
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="продукт", related_name="ratings")
-    value = models.SmallIntegerField("Значение", default=0, validators=[MinValueValidator(1),MaxValueValidator(5)])
+    value = models.FloatField("Значение", default=0, validators=[MinValueValidator(1.0),MaxValueValidator(5.0)])
     user = models.ForeignKey(User, verbose_name='пользователь', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
