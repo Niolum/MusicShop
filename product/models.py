@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from user.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 
@@ -101,29 +102,14 @@ class ProductPhoto(models.Model):
         verbose_name_plural = 'Фото продуктов'
 
 
-class Ratingstar(models.Model):
-    """ Звезда рейтинга"""
-    value = models.SmallIntegerField("Значение", default=0)
-    user = models.ForeignKey(User, verbose_name='пользователь', on_delete=models.CASCADE, null=True)
-
-
-    def __str__(self):
-        return f'{self.user}-{self.value}'
-
-    class Meta:
-        verbose_name = 'Звезда рейтинга'
-        verbose_name_plural = 'Звезды рейтинга'
-        ordering = ["-value"]
-
-
 class Rating(models.Model):
     """ Рейтинг """
-    star = models.ForeignKey(Ratingstar, on_delete=models.CASCADE, verbose_name="звезда")
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="продукт", related_name="ratings")
-
+    value = models.SmallIntegerField("Значение", default=0, validators=[MinValueValidator(1),MaxValueValidator(5)])
+    user = models.ForeignKey(User, verbose_name='пользователь', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return f"{self.star}-{self.product}"
+        return f"{self.value}-{self.product}"
 
     class Meta:
         verbose_name = 'Рейтинг'

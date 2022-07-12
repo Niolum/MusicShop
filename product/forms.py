@@ -1,5 +1,5 @@
 from django import forms
-from .models import Rating, Ratingstar, Review
+from .models import Rating, Review
 
 
 class ReviewForm(forms.ModelForm):
@@ -13,15 +13,15 @@ class ReviewForm(forms.ModelForm):
 
 class RatingForm(forms.ModelForm):
     CHOICES = [
-        (1, 1),
-        (2, 2),
-        (3, 3),
+        (5, 5),
         (4, 4),
-        (5, 5)
+        (3, 3),
+        (2, 2),
+        (1, 1)
     ]
 
-    star = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect())
+    value = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect())
 
     class Meta:
         model = Rating
-        fields = ("star",)
+        fields = ("value",)
