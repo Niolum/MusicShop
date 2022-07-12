@@ -98,7 +98,7 @@ class CreateRatingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Rating
-        fields = ['star', 'product']
+        fields = ['value', 'product']
 
     # def create(self, validated_data):
     #     rating, _ = Rating.objects.update_or_create(

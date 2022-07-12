@@ -76,7 +76,7 @@ class AddStarRating(View):
             Rating.objects.update_or_create(
                 user=request.user,
                 product_id=int(request.POST.get("product")),
-                # defaults={'star_id': int(request.POST.get("star"))}
+                defaults={'value': int(request.POST.get("value"))}
             )
             return HttpResponse(status=201)
         else:

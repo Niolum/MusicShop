@@ -127,7 +127,7 @@ class BrandAdmin(admin.ModelAdmin):
 
 @admin.register(Rating)
 class RatingAdmin(admin.ModelAdmin):
-    list_display = ("star", "product")
+    list_display = ("value", "product", "user")
 
 
 @admin.register(ProductPhoto)
@@ -141,6 +141,3 @@ class ProductPhotoAdmin(admin.ModelAdmin):
             pass
 
     get_image.short_description = "Изображение"
-
-
-admin.site.register(Ratingstar)
