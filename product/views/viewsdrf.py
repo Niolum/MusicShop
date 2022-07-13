@@ -12,7 +12,7 @@ from ..serializers import (
     SubcategoryListSerializer,
     SubcategoryDetailSerializer,
 )
-from ..service import ProductFilter, PaginationProducts
+from ..service import ProductFilter, PaginationProducts, SubcategoryFilter
 
 
 
@@ -65,6 +65,7 @@ class CategorysViewSet(viewsets.ReadOnlyModelViewSet):
 
 class SubcategorysViewSet(viewsets.ReadOnlyModelViewSet):
     """Вывод подкатегорий"""
+    filterset_class = SubcategoryFilter
     queryset = Subcategory.objects.all()
 
     def get_serializer_class(self):
