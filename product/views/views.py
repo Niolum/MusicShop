@@ -7,6 +7,7 @@ from ..filters import SubcategoryFilter
 from django.views.generic.base import View
 from ..forms import RatingForm, ReviewForm
 from django.http import HttpResponse
+from django.db.models import Q
 
 
 
@@ -104,3 +105,19 @@ class AddReview(View):
             form.user = request.user
             form.save()
             return redirect(product.get_absolute_url())
+
+
+class SearchResultView(ListView):
+    model = Product
+    paginate_by = 3
+    template_name = 'product/product_list.html'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        object_list = Product.objects.filter(Q(title__icontains=query) | Q(brand__title__icontains=query) | Q(subcategory__title__icontains=query))
+        return object_list
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchResultView, self).get_context_data(**kwargs)
+        context['title'] = 'Результаты поиска'
+        return context
