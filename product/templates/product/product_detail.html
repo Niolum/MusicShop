@@ -23,7 +23,11 @@
                 {% endfor %}
             </span>
             <b>Общий рейтинг:</b>
+            {% if not middle_star %}
+            <span class="editContent">0 / 5,0</span>
+            {% else %}
             <span class="editContent">{{middle_star}} / 5,0</span>
+            {% endif %}
         </form>
 
         </div>
@@ -104,6 +108,7 @@
         <button type="submit" class="btn btn-primary add-review">Добавить</button>
       </form>
     </div>
+    {% if product.get_review %}
     <div class="row">
       <div class="comments mt-5">
       {% for review in product.get_review %}
@@ -129,6 +134,7 @@
       {% endfor %}
       </div>
     </div>
+    {% endif %}
   </div>
 </div>
 <script>
