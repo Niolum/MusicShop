@@ -13,7 +13,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
-class AddToCartView(CartMixin, View):
+class AddToCartView(LoginRequiredMixin, CartMixin, View):
+    login_url = 'login'
+    
     def get(self, request, *args, **kwargs):
         product_slug = kwargs.get('url')
         product = Product.objects.get(url=product_slug)
@@ -29,7 +31,9 @@ class AddToCartView(CartMixin, View):
             return redirect(product.get_absolute_url())
         
 
-class DeleteFromCartView(CartMixin, View):
+class DeleteFromCartView(LoginRequiredMixin, CartMixin, View):
+    login_url = 'login'
+
     def get(self, request, *args, **kwargs):
         product_slug = kwargs.get('url')
         product = Product.objects.get(url=product_slug)
@@ -43,7 +47,9 @@ class DeleteFromCartView(CartMixin, View):
         return HttpResponseRedirect(reverse('cart'))
 
 
-class ChangeQTYView(CartMixin, View):
+class ChangeQTYView(LoginRequiredMixin, CartMixin, View):
+    login_url = 'login'
+
     def post(self, request, *args, **kwargs):
         product_slug = kwargs.get('url')
         product = Product.objects.get(url=product_slug)
@@ -59,14 +65,16 @@ class ChangeQTYView(CartMixin, View):
         return HttpResponseRedirect(reverse('cart'))
 
 
-class CartView(CartMixin, View):
+class CartView(LoginRequiredMixin, CartMixin, View):
+    login_url = 'login'
 
     def get(self, request, *args, **kwargs):
         context = {'cart': self.cart}
         return render(request, 'cart/cart.html', context)
 
 
-class OrderCheckView(CartMixin, View):
+class OrderCheckView(LoginRequiredMixin, CartMixin, View):
+    login_url = 'login'
 
     def get(self, request, *args, **kwargs):
         form = OrderForm(request.POST or None)
@@ -77,7 +85,8 @@ class OrderCheckView(CartMixin, View):
         return render(request, 'cart/ordercheck.html', context)
 
 
-class MakeOrderView(CartMixin, View):
+class MakeOrderView(LoginRequiredMixin, CartMixin, View):
+    login_url = 'login'
 
     @transaction.atomic
     def post(self, request, *args, **kwargs):
@@ -90,9 +99,7 @@ class MakeOrderView(CartMixin, View):
             new_order.last_name = form.cleaned_data['last_name']
             new_order.phone = form.cleaned_data['phone']
             new_order.address = form.cleaned_data['address']
-            new_order.last_name = form.cleaned_data['last_name']
             new_order.buying_type = form.cleaned_data['buying_type']
-            new_order.last_name = form.cleaned_data['last_name']
             new_order.comment = form.cleaned_data['comment']
             new_order.order_date = form.cleaned_data['order_date']
             new_order.save()
@@ -115,7 +122,9 @@ class AddWishlist(LoginRequiredMixin, View):
         return redirect(product.get_absolute_url())
 
 
-class DeleteFromWishlist(View):
+class DeleteFromWishlist(LoginRequiredMixin, View):
+    login_url = 'login'
+
     def get(self, request, *args, **kwargs):
         product = get_object_or_404(Product, url=self.kwargs['slug'])
         customer = Customer.objects.get(user=request.user)

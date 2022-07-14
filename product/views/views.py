@@ -1,13 +1,13 @@
 from django.db import models
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, redirect
 from ..models import Category, Subcategory, Product, Brand, Rating
-from ..service import ProductFilter, PaginationProducts
 from django.views.generic import ListView, DetailView
-from ..filters import SubcategoryFilter
 from django.views.generic.base import View
 from ..forms import RatingForm, ReviewForm
 from django.http import HttpResponse
 from django.db.models import Q
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 
 
 
@@ -92,7 +92,8 @@ class AddStarRating(View):
             return HttpResponse(status=400)
 
 
-class AddReview(View):
+class AddReview(LoginRequiredMixin, View):
+    login_url = '/users/accounts/login/'
 
     def post(self, request, *args, **kwargs):
         form = ReviewForm(request.POST)
