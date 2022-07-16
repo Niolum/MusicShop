@@ -142,5 +142,5 @@ class WishlistView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(WishlistView, self).get_context_data(**kwargs)
-        context['wishlist'] = context['customer_list'][0].wishlist
+        context['wishlist'] = context['customer_list'][0].wishlist.select_related('subcategory')
         return context

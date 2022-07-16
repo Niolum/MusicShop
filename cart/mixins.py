@@ -8,7 +8,7 @@ class CartMixin(View):
             customer = Customer.objects.filter(user=request.user).first()
             if not customer:
                 customer = Customer.objects.create(user=request.user)
-            cart = Cart.objects.filter(owner=customer, in_order=False).first()
+            cart = Cart.objects.filter(owner=customer, in_order=False).prefetch_related('cart_products').first()
             if not cart:
                 cart = Cart.objects.create(owner=customer)
         else:

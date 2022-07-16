@@ -10,7 +10,7 @@
         <div class="row">
                 {% if wishlist %}
                 <h1 class="your-wishlist">Ваш список желаемого</h1>
-                    {% for prod in wishlist.all %}
+                    {% for prod in wishlist %}
                     <div class="col-lg-4 col-md-6 col-xs-6 product">
                         <div class="card" style="width: 18rem;">
                             <a href="{{ prod.get_absolute_url }}" class="editContent">
