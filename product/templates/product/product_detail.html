@@ -48,7 +48,7 @@
                 {% endfor %}
               </div>
               <div class="carousel-inner">
-                {% for photo in product.productphoto_set.all %}
+                {% for photo in photos %}
                 {% with forloop.counter0 as i %}
                 <div class="carousel-item {% if i is 0 %}active{% endif %}">
                   <figure class="item-productphoto">
@@ -111,7 +111,7 @@
     {% if product.get_review %}
     <div class="row">
       <div class="comments mt-5">
-      {% for review in product.get_review %}
+      {% for review in reviews %}
         <div class="parent-comment mt-2">
           <h5 class="mt-0 editContent">
               {{ review.user }}

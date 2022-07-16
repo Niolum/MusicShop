@@ -1,6 +1,6 @@
 from django.db import models
 from django.shortcuts import get_object_or_404, redirect
-from ..models import Category, Subcategory, Product, Brand, Rating
+from ..models import Category, ProductPhoto, Subcategory, Product, Brand, Rating
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
 from ..forms import RatingForm, ReviewForm
@@ -48,7 +48,7 @@ class ProductSubcategoryListView(ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        return Product.objects.filter(subcategory__url=self.kwargs['slug'])
+        return Product.objects.filter(subcategory__url=self.kwargs['slug']).select_related('subcategory')
 
     def get_context_data(self, **kwargs):
         context = super(ProductSubcategoryListView, self).get_context_data(**kwargs)
@@ -69,6 +69,9 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
         context['title'] = context['product'].title
+        context['reviews'] = context['product'].get_review().select_related('parent').select_related('user')
+        product_id = context['product'].id
+        context['photos'] = ProductPhoto.objects.filter(product_id=product_id).select_related('product')
         # product_id = context['product'].id
         # context['userrating'] = Rating.objects.filter(user=self.request.user, product_id=product_id)
         context["star_form"] = RatingForm()
@@ -115,7 +118,8 @@ class SearchResultView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('q')
-        object_list = Product.objects.filter(Q(title__icontains=query) | Q(brand__title__icontains=query) | Q(subcategory__title__icontains=query))
+        object_list = Product.objects.filter(Q(title__icontains=query) | Q(brand__title__icontains=query) | 
+        Q(subcategory__title__icontains=query)).select_related('subcategory')
         return object_list
 
     def get_context_data(self, **kwargs):

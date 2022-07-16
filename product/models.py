@@ -78,7 +78,7 @@ class Product(models.Model):
         return reverse('products', kwargs={"slug":self.url})
 
     def get_review(self):
-        return self.reviews.filter(parent__isnull=True) 
+        return self.reviews.filter(parent__isnull=True)
 
     class Meta:
         ordering = ['id']
