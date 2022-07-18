@@ -1,4 +1,3 @@
-from django.test import TestCase
 from ..models import Cart, CartProduct, Customer, Order
 from product.models import Category, Subcategory, Product, Brand
 from django.contrib.auth.models import User

@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.db import transaction
-from django.views.generic import DetailView, ListView
+from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
