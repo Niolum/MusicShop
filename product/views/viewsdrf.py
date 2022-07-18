@@ -1,7 +1,7 @@
 from django.db import models
 from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
-from ..models import Category, Subcategory, Product, Brand, Rating
+from ..models import Category, Subcategory, Product
 from ..serializers import (
     CreateRatingSerializer, 
     ProductListSerializer, 

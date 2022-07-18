@@ -7,29 +7,22 @@ from ..forms import RatingForm, ReviewForm
 from django.http import HttpResponse
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
 
 
 
 class CategoryListView(ListView):
     model = Category
     queryset = Category.objects.all()
-    # allow_empty = False
 
     def get_context_data(self, **kwargs):
         context = super(CategoryListView, self).get_context_data(**kwargs)
         context['brands'] = Brand.objects.all()
         return context
-    # @staticmethod
-    # def all_brands():
-    #     return Brand.objects.all()
-    # {{ view.all_brands }}
 
 
 class SubcategoryCategoryListView(ListView):
     model = Subcategory
     slug_field = "url"
-    # allow_empty = False
 
     def get_queryset(self):
         return Subcategory.objects.filter(category__url=self.kwargs['slug'])
@@ -44,7 +37,6 @@ class SubcategoryCategoryListView(ListView):
 class ProductSubcategoryListView(ListView):
     model = Product
     slug_field = "url" 
-    # allow_empty = False
     paginate_by = 3
 
     def get_queryset(self):
@@ -72,8 +64,6 @@ class ProductDetailView(DetailView):
         context['reviews'] = context['product'].get_review().select_related('parent').select_related('user')
         product_id = context['product'].id
         context['photos'] = ProductPhoto.objects.filter(product_id=product_id).select_related('product')
-        # product_id = context['product'].id
-        # context['userrating'] = Rating.objects.filter(user=self.request.user, product_id=product_id)
         context["star_form"] = RatingForm()
         context["form"] = ReviewForm()
         context["middle_star"] = context['product'].middle_star

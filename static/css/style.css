@@ -374,16 +374,26 @@ input[type=password] {
     padding: auto;
 }
 
+.reset-form span {
+    display: block;
+    margin: 15px 0;
+}
+
 /* reset-done */
 .reset-done {
     margin:auto;
-    padding: auto;
+    padding: 0 15px;
 }
 
 /* reset-confirm */
 .reset-confirm {
     margin:auto;
-    padding: auto;
+    padding: 20px 10px;
+}
+
+.reset-confirm label {
+    display: block;
+    margin: 10px 10px;
 }
 
 /* reset-complete */
@@ -392,14 +402,31 @@ input[type=password] {
     padding: auto;
 }
 
+.reset-complete a{
+    display: block;
+    text-decoration: none;
+    font-size: 20px;
+    color:rgb(90, 32, 226);
+}
+
 /* register */
 .register-form {
     margin: auto;
     padding: auto;
 }
 
+.register-form label {
+    display: block;
+    margin: 10px 0;
+}
+
+.register-form span {
+    display: block;
+    margin: 10px 0;
+}
+
 .register-button {
-    width: 20%;
+    width: 30%;
 }
 
 /* register-done */
