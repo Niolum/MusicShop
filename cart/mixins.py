@@ -11,10 +11,6 @@ class CartMixin(View):
             cart = Cart.objects.filter(owner=customer, in_order=False).prefetch_related('cart_products').first()
             if not cart:
                 cart = Cart.objects.create(owner=customer)
-        else:
-            cart = Cart.objects.filter(for_anonymous_user=True).first()
-            if not cart:
-                cart = Cart.objects.create(for_anonymous_user=True)
-        self.cart=cart
-        self.cart.save()
-        return super().dispatch(request, *args, **kwargs)
+            self.cart=cart
+            self.cart.save()
+            return super().dispatch(request, *args, **kwargs)
