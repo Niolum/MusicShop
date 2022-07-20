@@ -5,6 +5,8 @@ from .base import *
 
 environ.Env.read_env(str(Path(__file__).parent / ".env"), DEBUG='False')
 
+ALLOWED_HOSTS += ['eshopmusic.herokuapp.com',]
+
 MIDDLEWARE += [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
