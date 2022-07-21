@@ -27,7 +27,7 @@ urlpatterns = [
     path('carts/', include('cart.urls.urls')),
     path('api/v1/users/', include('user.urls.urlsdrf')),
     path('users/', include('user.urls.urls')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 if settings.DEBUG:
