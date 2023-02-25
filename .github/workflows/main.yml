@@ -34,7 +34,8 @@ jobs:
           run: |
             docker-compose -f docker-compose.yml build
         - name: Push images
-          docker push ${{ env.WEB_IMAGE }}
+          run: |
+            docker push ${{ env.WEB_IMAGE }}
 
     deploy:
       name: Deploy to VPS
