@@ -1,0 +1,74 @@
+name: Continuous Integration and Delivery
+
+on:
+  push:
+    branches:
+      - 'master'
+
+env: 
+  WEB_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/web
+
+jobs:
+
+    build:
+      name: Build Docker Images
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout master
+          uses: actions/checkout@v1
+        - name: Add and set environment variables to .env
+          env:
+            SECRET_KEY: ${{ secrets.SECRET_KEY }}
+            DEBUG: ${{ secrets.DEBUG }}
+            ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
+          run: |
+            echo "WEB_IMAGE=$(echo ${{ env.WEB_IMAGE }})" >> $GITHUB_ENV
+        - name: Log in to Github Packeges
+          run: echo $(REGISTRY_TOKEN) | docker login ghcr.io -u ${{ secrets.NAMESPACE }} --password-stdin
+          env:
+            REGISRTY_TOKEN: ${{ secrets.REGISRTY_TOKEN }}
+        - name: Pull images
+          run: |
+            docker pull ${{ env.WEB_IMAGE }} || true
+        - name: Build images
+          run: |
+            docker-compose -f docker-compose.yml build
+        - name: Push images
+          docker push ${{ env.WEB_IMAGE }}
+
+    deploy:
+      name: Deploy to VPS
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout master
+          uses: actions/checkout@v1
+        - name: Add and set environment variables to .env
+          run: |
+            echo "WEB_IMAGE=${{ env.WEB_IMAGE }}" >> .env
+          env:
+            SECRET_KEY: ${{ secrets.SECRET_KEY }}
+            DEBUG: ${{ secrets.DEBUG }}
+            ALLOWED_HOSTS: ${{ secrets.ALLOWED_HOSTS }}
+        - name: Copy repo
+          uses: appleboy/scp-action@master
+          env: 
+            HOST: ${{ secrets.HOST }}
+            USERNAME: ${{ secrets.USERNAME }}
+            PORT: ${{ secrets.PORT }}
+            KEY: ${{ secrets.SSH_KEY }}
+          with:
+            source: "."
+            target: "/var/musicshop"
+        - name: Executing remote command
+          uses: appleboy/ssh-action@master
+          with:
+            HOST: ${{ secrets.HOST }}
+            USERNAME: ${{ secrets.USERNAME }}
+            PORT: ${{ secrets.PORT }}
+            KEY: ${{ secrets.SSH_KEY }}
+        - name: Build and deploy images
+          run: |
+            source .env
+            docker login ghcr.io -u ${{ secrets.NAMESPACE }} -p ${{ secrets.REGISTRY_TOKEN}}
+            docker pull $WEB_IMAGE
+            sudo docker-compose -f docker-compose.yml up -d
