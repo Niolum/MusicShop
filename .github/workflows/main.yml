@@ -24,7 +24,7 @@ jobs:
           run: |
             echo "WEB_IMAGE=$(echo ${{ env.WEB_IMAGE }})" >> $GITHUB_ENV
         - name: Log in to Github Packeges
-          run: echo $(REGISTRY_TOKEN) | docker login ghcr.io -u ${{ secrets.NAMESPACE }} --password-stdin
+          run: echo ${REGISTRY_TOKEN} | docker login ghcr.io -u ${{ secrets.NAMESPACE }} --password-stdin
           env:
             REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
         - name: Pull images
@@ -68,9 +68,13 @@ jobs:
             USERNAME: ${{ secrets.USERNAME }}
             PORT: ${{ secrets.PORT }}
             KEY: ${{ secrets.SSH_KEY }}
-        - name: Build and deploy images
-          run: |
+          script: |
+            cd /var/musicshop/shop
+            echo 'DEBUG=${{ secrets.DEBUG }}' > .env
+            echo 'SECRET_KEY=${{ secrets.SECRET_KEY }}' >> .env
+            echo 'ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }}' >> .env
+            cd ..
             source .env
             docker login ghcr.io -u ${{ secrets.NAMESPACE }} -p ${{ secrets.REGISTRY_TOKEN}}
             docker pull $WEB_IMAGE
-            sudo docker-compose -f docker-compose.yml up -d
+            sudo docker compose -f docker-compose.yml up -d
