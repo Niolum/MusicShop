@@ -20,6 +20,9 @@ from django.conf.urls.static import static
 from django.conf.urls import url
 from django.views.static import serve
 
+from shop.exceptions import handler404, handler500
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('ckeditor/', include('ckeditor_uploader.urls')),
@@ -32,6 +35,9 @@ urlpatterns = [
     url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
     url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT})
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = handler404
+handler500 = handler500
 
 
 if settings.DEBUG:

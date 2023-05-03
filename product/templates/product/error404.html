@@ -1,0 +1,16 @@
+{% extends 'product/base.html' %}
+
+{% block title %}
+<title>{{title}}</title>
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h1>Oops, 404</h1>
+    <div class="error-text">
+        <p class="error-name"> Страница не найдена</p>
+        <p class="error-explanation">У нас нет такой страницы, возможно Вы ввели неправильный URL-адрес. Попробуйте еще раз.</p>
+        <a class="error-return" aria-current="page" href="{% url 'home' %}">Вернуться на Главную страницу</a>
+    </div>
+</div>
+{% endblock content%}

@@ -1,10 +1,26 @@
 version: '3.8'
 services:
+  shopdb:
+    image: postgres:14
+    container_name: postgres-shop
+    env_file:
+      - ./.env
+    command: -p 5431
+    networks:
+      testnet:
+        ipv4_address: 172.26.0.6
+    volumes:
+      - django_musicshop_db:/var/lib/postgresql/data
+    ports:
+      - 5431:5431
+    expose:
+      - 5431
   shop:
     build: .
     container_name: musicshop
     volumes:
-      - .:/musicshop
+      - static_django_shop:/musicshop/staticfiles
+      - media_django_shop:/musicshop/media
   shop_migrate:
     extends:
       service: shop
@@ -18,5 +34,41 @@ services:
       service: shop_migrate
     container_name: 'shop_run'
     command: gunicorn shop.wsgi:application --bind 0.0.0.0:7000
+    networks:
+      testnet:
+        ipv4_address: 172.26.0.7
+    expose:
+      - 7000
+  redis_cache:
+    image: redis
+    container_name: redis-django-shop
     ports:
-      - 7000:7000
+      - 6371:6371
+    command: --port 6371
+    networks:
+      testnet:
+        ipv4_address: 172.26.0.8
+  nginx_shop:
+    build: ./nginx
+    container_name: nginx-django-shop
+    volumes:
+      - static_django_shop:/musicshop/staticfiles
+      - media_django_shop:/musicshop/media
+    networks:
+      testnet:
+        ipv4_address: 172.26.0.9
+    ports:
+      - 1336:80
+    depends_on:
+      - shop_run
+      
+networks:
+  testnet:
+    external: True
+volumes:
+  static_django_shop:
+    external: True
+  media_django_shop:
+    external: True
+  django_musicshop_db:
+    external: True
