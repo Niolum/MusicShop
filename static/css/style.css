@@ -79,28 +79,6 @@ h1 {
     margin-top: 20px;
 }
 
-/* .block-category::after{
-    content: "";
-    display: block;
-    position: absolute;
-    right: 0;
-    bottom: -3px;
-    width: 0;
-    height: 2px;
-    background-color: black;
-    transition: width 0.3s;
-}
-    
-.block-category:hover:after {
-    content: "";
-    width: 100%;
-    display: block;
-    position: absolute;
-    left: 0;
-    bottom: -3px;
-    height: 2px;
-} */
-
 .block-category div,
 .block-subcategory div {
     position: relative;
@@ -614,4 +592,23 @@ input[type=date] {
 
 .list-pages .page-num-selected:hover {
 	box-shadow: none; 
+}
+
+/* errors */
+
+.error-text {
+    font-weight: 400;
+    text-align: center;
+}
+
+.error-name {
+    font-size: 30px;
+}
+
+.error-explanation {
+    font-size: 24px;
+}
+
+.error-return {
+    text-decoration: none !important;
 }

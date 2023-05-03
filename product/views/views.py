@@ -1,4 +1,5 @@
 from django.db import models
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect
 from ..models import Category, ProductPhoto, Subcategory, Product, Brand, Rating
 from django.views.generic import ListView, DetailView
@@ -25,12 +26,19 @@ class SubcategoryCategoryListView(ListView):
     slug_field = "url"
 
     def get_queryset(self):
-        return Subcategory.objects.filter(category__url=self.kwargs['slug'])
+        try:
+            subcategories = Subcategory.objects.filter(category__url=self.kwargs['slug'])
+        except Subcategory.DoesNotExist:
+            raise Http404('Subcategories does not exist')
+        return subcategories
 
     def get_context_data(self, **kwargs):
         context = super(SubcategoryCategoryListView, self).get_context_data(**kwargs)
         context['brands'] = Brand.objects.all()
-        context['title'] = context['subcategory_list'][0].category
+        try:
+            context['title'] = context['subcategory_list'][0].category
+        except IndexError:
+            raise Http404('Subcategories does not exist')
         return context
 
 
@@ -40,11 +48,18 @@ class ProductSubcategoryListView(ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        return Product.objects.filter(subcategory__url=self.kwargs['slug']).select_related('subcategory')
+        try:
+            products = Product.objects.filter(subcategory__url=self.kwargs['slug']).select_related('subcategory')
+        except Product.DoesNotExist:
+            raise Http404('Products does not exist')
+        return products
 
     def get_context_data(self, **kwargs):
         context = super(ProductSubcategoryListView, self).get_context_data(**kwargs)
-        context['title'] = context['product_list'][0].subcategory
+        try:
+            context['title'] = context['product_list'][0].subcategory
+        except IndexError:
+            raise Http404('Products does not exist')
         return context
 
 
