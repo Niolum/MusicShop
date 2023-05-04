@@ -29,6 +29,9 @@ services:
       /bin/sh -c "python3 manage.py migrate --force-color -v 3
       && python3 manage.py loaddata user/fixtures/user.json cart/fixtures/cart.json product/fixtures/product.json
       && python3 manage.py collectstatic"
+    networks:
+      testnet:
+        ipv4_address: 172.26.0.10
   shop_run:
     extends:
       service: shop_migrate
